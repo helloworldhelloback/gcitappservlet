@@ -27,7 +27,7 @@ ${result}
 	<form action="addAuthor" method="post">
 		Author Name: <input type="text" name="authorName"> <br />
 		Associate author to books:<br/>
-		<select name="bookId">
+		<select name="bookId" multiple>
 			<option value="-1">No Book</option>
 			<%for(Book b: books){ %>
 			<option value="<%=b.getBookId()%>"><%=b.getTitle() %></option>

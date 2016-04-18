@@ -116,14 +116,15 @@ public class AdminServlet extends HttpServlet {
 		String returnPath = "/administrator.html";
 		System.out.println("Author Post");
 		String authorName = request.getParameter("authorName");
-		String bookId = request.getParameter("bookId");
+		String[] bookIdArray =  request.getParameterValues("bookId");
 		String addAuthorResult = "";
-		System.out.println("your book id is="+bookId);
+		for(String b : bookIdArray)
+		System.out.println("your book id is="+b);
 		if (authorName != null && authorName.length() > 3 && authorName.length() < 45) {
 			Author a = new Author();
 			a.setAuthorName(authorName);
 			try {
-				service.createAuthor(a);
+				service.createAuthorWithBookAssociation(a, bookIdArray);
 				returnPath = "/viewauthors.jsp";
 				addAuthorResult = "Author added sucessfully.";
 			} catch (ClassNotFoundException | SQLException e) {

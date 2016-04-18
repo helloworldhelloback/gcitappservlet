@@ -18,6 +18,25 @@ import java.util.List;
  */
 public class AdministratorService {
 	/////////////////////////////////////Author/////////////////////////////////////////////////////////////
+	public void createAuthorWithBookAssociation(Author author, String[] books) throws SQLException, ClassNotFoundException{
+        ConnectionUtil c = new ConnectionUtil();
+        Connection conn = c.getConnection();
+        try{
+        	int authorId= createAuthorWithID(author);
+            Book_AuthorsDAO bdao = new Book_AuthorsDAO(conn);
+            for(String book:books){
+            	Book_Authors bookauthor = new Book_Authors();
+            	bookauthor.setAuthorId(authorId);
+            	bookauthor.setBookId(Integer.parseInt(book));
+            	bdao.addRow(bookauthor);
+            }
+            conn.commit();
+        }catch (Exception e){
+            conn.rollback();
+        }finally{
+            conn.close();
+        }		
+    }	
     public void createAuthor(Author author) throws SQLException, ClassNotFoundException{
         ConnectionUtil c = new ConnectionUtil();
         Connection conn = c.getConnection();
@@ -103,6 +122,8 @@ public class AdministratorService {
 		}		
 	}
 	/////////////////////////////////////////Book//////////////////////////////////////////////////////////
+	
+	
 	public List<Book> getAllBooks()throws SQLException, ClassNotFoundException{
         ConnectionUtil c = new ConnectionUtil();
         Connection conn = c.getConnection();
