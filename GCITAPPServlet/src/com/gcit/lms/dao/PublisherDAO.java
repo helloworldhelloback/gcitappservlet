@@ -22,12 +22,11 @@ public class PublisherDAO extends BaseDAO{
         super(conn);
     }
     
-    public void addPublisher(Publisher publisher){		
-        try{
+    public void addPublisher(Publisher publisher) throws ClassNotFoundException, SQLException{		
+       // try{
             save("insert into tbl_publisher (publisherName, publisherAddress, publisherPhone) values (?,?,?)", new Object[] {publisher.getPublisherName(), publisher.getPublisherAddress(), publisher.getPublisherPhone()});
-        }      catch(ClassNotFoundException ce){            
-        }catch(SQLException se){
-        }
+        //}      catch(Exception ce){            
+        //}
     }
 	
     public void updatePublisher(Publisher publisher){
@@ -38,15 +37,15 @@ public class PublisherDAO extends BaseDAO{
         }
     }
 
-    public void deletePublisher(Publisher publisher) {		
+    public void deletePublisher(Integer publisherId) {		
         try{
-            save("delete from tbl_publisher where publisherId = ?", new Object[] {publisher.getPublisherId()});
+            save("delete from tbl_publisher where publisherId = ?", new Object[] {publisherId});
         }      catch(ClassNotFoundException ce){            
         }catch(SQLException se){
         }
     }
 
-    public List<Publisher> readAllPublisher() {
+    public List<Publisher> readAllPublishers() {
         try{
             return (List<Publisher>) readAll("select * from tbl_publisher", null);}
         catch(ClassNotFoundException ce){
@@ -65,6 +64,13 @@ public class PublisherDAO extends BaseDAO{
         }
         return null;
     }
+    public Publisher readPublishersByID(Integer publisherId) throws ClassNotFoundException, SQLException{
+		List<Publisher> publishers = (List<Publisher>) readAll("select * from tbl_publisher where publisherId=?", new Object[] {publisherId});
+		if(publishers!=null && publishers.size() >0){
+			return publishers.get(0);
+		}
+		return null;
+	}
 
     public Integer getCount(){		
         try{

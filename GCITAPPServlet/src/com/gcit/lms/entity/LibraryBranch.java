@@ -11,65 +11,29 @@ import java.util.List;
  * @author tictoc
  */
 public class LibraryBranch {
-    private int branchId;
-    private String branchName;
-    private String branchAddress;
-    private List<Book> books;
+    private int librarybranchId;
+    private String librarybranchName;
+    private String librarybranchAddress;
+    
+	
+	public int getLibrarybranchId() {
+		return librarybranchId;
+	}
+	public void setLibrarybranchId(int librarybranchId) {
+		this.librarybranchId = librarybranchId;
+	}
+	public String getLibrarybranchName() {
+		return librarybranchName;
+	}
+	public void setLibrarybranchName(String librarybranchName) {
+		this.librarybranchName = librarybranchName;
+	}
+	public String getLibrarybranchAddress() {
+		return librarybranchAddress;
+	}
+	public void setLibrarybranchAddress(String librarybranchAddress) {
+		this.librarybranchAddress = librarybranchAddress;
+	}
 
-    /**
-     * @return the branchId
-     */
-    public int getBranchId() {
-        return branchId;
-    }
-
-    /**
-     * @param branchId the branchId to set
-     */
-    public void setBranchId(int branchId) {
-        this.branchId = branchId;
-    }
-
-    /**
-     * @return the branchName
-     */
-    public String getBranchName() {
-        return branchName;
-    }
-
-    /**
-     * @param branchName the branchName to set
-     */
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    /**
-     * @return the branchAddress
-     */
-    public String getBranchAddress() {
-        return branchAddress;
-    }
-
-    /**
-     * @param branchAddress the branchAddress to set
-     */
-    public void setBranchAddress(String branchAddress) {
-        this.branchAddress = branchAddress;
-    }
-
-    /**
-     * @return the books
-     */
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    /**
-     * @param books the books to set
-     */
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
     
 }

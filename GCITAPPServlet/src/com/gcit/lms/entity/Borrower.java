@@ -16,7 +16,6 @@ public class Borrower {
     private String name;
     private String address;
     private String phone;
-    private List<Book> books;
 
     /**
      * @return the cardNo
@@ -74,17 +73,4 @@ public class Borrower {
         this.phone = phone;
     }
 
-    /**
-     * @return the books
-     */
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    /**
-     * @param books the books to set
-     */
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 }

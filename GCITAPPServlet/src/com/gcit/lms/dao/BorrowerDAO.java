@@ -37,9 +37,9 @@ public class BorrowerDAO extends BaseDAO{
         }
     }
 
-    public void deleteBorrower(Borrower borrower) {		
+    public void deleteBorrower(Integer cardNo) {		
         try{
-            save("delete from tbl_borrower where cardNo = ?", new Object[] {borrower.getCardNo()});
+            save("delete from tbl_borrower where cardNo = ?", new Object[] {cardNo});
         }      catch(ClassNotFoundException ce){            
         }catch(SQLException se){
         }

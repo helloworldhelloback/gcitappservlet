@@ -24,7 +24,7 @@ public class GenreDAO extends BaseDAO{
     
     public void addGenre(Genre genre){		
         try{
-            save("insert into tbl_genre (name) values (?)", new Object[] {genre.getGenreName()});
+            save("insert into tbl_genre (genre_name) values (?)", new Object[] {genre.getGenreName()});
         }      catch(ClassNotFoundException ce){            
         }catch(SQLException se){
         }
@@ -32,22 +32,23 @@ public class GenreDAO extends BaseDAO{
 	
     public void updateGenre(Genre genre){
         try{
-            save("update tbl_genre set name = ? where genre_Id = ?", new Object[] {genre.getGenreName(), genre.getGenreId()});
+            save("update tbl_genre set genre_name = ? where genre_id = ?", new Object[] {genre.getGenreName(), genre.getGenreId()});
         }      catch(ClassNotFoundException ce){            
         }catch(SQLException se){
         }
     }
 
-    public void deleteGenre(Genre genre) {		
+    public void deleteGenre(Integer genreId) {		
         try{
-            save("delete from tbl_genre where genre_Id = ?", new Object[] {genre.getGenreId()});
+            save("delete from tbl_genre where genre_id = ?", new Object[] {genreId});
         }      catch(ClassNotFoundException ce){            
         }catch(SQLException se){
         }
     }
 
-    public List<Genre> readAllGenre() {
+    public List<Genre> readAllGenres() {
         try{
+        	System.out.println("inside genre dao");
             return (List<Genre>) readAll("select * from tbl_genre", null);}
         catch(ClassNotFoundException ce){
 
@@ -65,7 +66,22 @@ public class GenreDAO extends BaseDAO{
         }
         return null;
     }
+    public List<Genre> readGenreByName(String genreName){
 
+        try{
+            return (List<Genre>) readAll("select * from tbl_genre where genre_name like ?", new Object[] {genreName});
+        }      catch(ClassNotFoundException ce){            
+        }catch(SQLException se){
+        }
+        return null;
+    }
+    public Genre readGenresByID(Integer genreId) throws ClassNotFoundException, SQLException{
+		List<Genre> genres = (List<Genre>) readAll("select * from tbl_genre where genre_id=?", new Object[] {genreId});
+		if(genres!=null && genres.size() >0){
+			return genres.get(0);
+		}
+		return null;
+	}
     @Override
     public List<Genre> extractData(ResultSet rs) {
 
@@ -73,8 +89,8 @@ public class GenreDAO extends BaseDAO{
             List<Genre> genres = new ArrayList<Genre>();		
             while(rs.next()){
                     Genre a = new Genre();
-                    a.setGenreId(rs.getInt("genre_Id"));
-                    a.setGenreName(rs.getString("name"));
+                    a.setGenreId(rs.getInt("genre_id"));
+                    a.setGenreName(rs.getString("genre_name"));
                     genres.add(a);
             }
             return genres;

@@ -50,9 +50,9 @@ public class BookDAO extends BaseDAO{
         }
     }
 
-    public void deleteBook(Book book) {		 
+    public void deleteBook(Integer bookId) {		 
         try{
-            save("delete from tbl_book where bookId = ?", new Object[] {book.getBookId()});
+            save("delete from tbl_book where bookId = ?", new Object[] {bookId});
         }      catch(ClassNotFoundException ce){            
         }catch(SQLException se){
         }
