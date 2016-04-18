@@ -14,16 +14,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <h2>Welcome to GCIT Library Management System - Librarian</h2>
-
+<button type="button" onclick="javascript:location.href='home.jsp'">Back To Main Page</button>
+<br/>
+<br/>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 ${result}
 </head>
 <body>
-<form action="updatePublisher" method="post">		
-		Book Title: <input type="text" name="title" value ="<%=bookcopies.getTitle()%>"> <br />
+<form action="updateLibBook" method="post">		
+		Book Title: <label for="title"><%=bookcopies.getTitle()%> <br />
 		No Of Copies: <input type="text" name="noOfCopies" value ="<%=bookcopies.getNoOfCopies()%>"> <br />
 		<input type="hidden" name="bookId" value=<%=bookcopies.getBookId() %>>
 		<input type="hidden" name="branchId" value=<%=bookcopies.getBranchId() %>>
-		<button type="submit">Edit Publisher</button>
+		<button type="submit">Update Book</button>
 	</form>
 
 </body>

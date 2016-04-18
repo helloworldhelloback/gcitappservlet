@@ -15,8 +15,8 @@ import java.sql.SQLException;
  */
 public class ConnectionUtil {
     private String driver = "com.mysql.jdbc.Driver";
-    //private String url = "jdbc:mysql://localhost/library";
-    private String url = "jdbc:mysql://192.168.0.7:3306/library";
+    private String url = "jdbc:mysql://localhost/library";
+    //private String url = "jdbc:mysql://192.168.0.7:3306/library";
     //private String user = "root";
     private String user = "ahmed";
     private String pass = "Zdvhm#2589";

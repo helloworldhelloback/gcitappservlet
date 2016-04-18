@@ -49,5 +49,20 @@ public class LibrarianService {
 		}
 		return null;
 	}
+	public void updateBookCopy(Book_Copies bookcopies) throws ClassNotFoundException, SQLException {
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			Book_CopiesDAO adao = new Book_CopiesDAO(conn);
+			adao.updateBookCopyNum(bookcopies);
+			conn.commit();
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}		
+	}
+	
     
 }

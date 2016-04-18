@@ -18,7 +18,6 @@
 <body>
 <a href="administrator.html">Administrator</a>
 <br/>
-<a href="selectLibBranch">Librarian</a>
 	<form action="selectLibBranch" method="post">
 		<select name="librarybranchId">
 			<%for(LibraryBranch l: librarybranches){ %>
@@ -27,8 +26,6 @@
 		</select>
 		<button type="submit">Librarian</button>
 	</form>
-		
-		
 <br/>
 <a href="borrower.html">Borrower</a>
 <br/>

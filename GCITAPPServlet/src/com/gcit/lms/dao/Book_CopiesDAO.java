@@ -30,6 +30,13 @@ public class Book_CopiesDAO extends BaseDAO{
 		}
 		return null;
 	}
+	public void updateBookCopyNum(Book_Copies bookcopies){
+        try{
+            save("update tbl_book_copies set noOfCopies = ? where bookId = ? and branchId=?", new Object[] {bookcopies.getNoOfCopies(), bookcopies.getBookId(), bookcopies.getBranchId()});
+        }      catch(ClassNotFoundException ce){            
+        }catch(SQLException se){
+        }
+    }
 
 	@Override
 	public List<?> extractDataFirstLevel(ResultSet rs) throws SQLException {

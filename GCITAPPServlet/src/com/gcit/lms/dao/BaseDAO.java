@@ -9,12 +9,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public abstract class BaseDAO {
-	/*
-	private String driver = "com.mysql.jdbc.Driver";
-	private String url = "jdbc:mysql://localhost/library";
-	private String user = "root";
-	private String pass = "Zdvhm#2589";
-	*/
+	
 	private Connection conn;
 	
 	public BaseDAO(Connection conn) {

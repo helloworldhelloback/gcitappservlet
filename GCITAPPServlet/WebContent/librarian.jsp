@@ -16,7 +16,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>LMS</title>
 <h2>Welcome to GCIT Library Management System - Librarian</h2>
-
+<button type="button" onclick="javascript:location.href='home.jsp'">Back To Main Page</button>
+<br/>
+<br/>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 ${result}
 </head>
