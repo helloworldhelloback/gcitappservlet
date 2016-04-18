@@ -124,7 +124,11 @@ public class AdminServlet extends HttpServlet {
 			Author a = new Author();
 			a.setAuthorName(authorName);
 			try {
-				service.createAuthorWithBookAssociation(a, bookIdArray);
+				if(bookIdArray!=null && bookIdArray.length>0)
+					if(bookIdArray[0] =="-1")
+						service.createAuthor(a);
+					else
+						service.createAuthorWithBookAssociation(a, bookIdArray);
 				returnPath = "/viewauthors.jsp";
 				addAuthorResult = "Author added sucessfully.";
 			} catch (ClassNotFoundException | SQLException e) {
