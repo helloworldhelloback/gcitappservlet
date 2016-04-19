@@ -16,18 +16,29 @@
 <h3>Please choose your role:</h3>
 </head>
 <body>
-<a href="administrator.html">Administrator</a>
+
+<form action="administrator.html" method="post">		
+		<button type="submit">Administrator</button>
+</form>
 <br/>
 	<form action="selectLibBranch" method="post">
+		<button type="submit">Librarian</button>
 		<select name="librarybranchId">
 			<%for(LibraryBranch l: librarybranches){ %>
 				<option value="<%=l.getLibrarybranchId()%>"><%=l.getLibrarybranchName() %></option>
 			<%} %>
-		</select>
-		<button type="submit">Librarian</button>
+		</select>		
 	</form>
 <br/>
-<a href="borrower.html">Borrower</a>
+<form action="borrower" method="post">
+	<button type="submit">Borrower</button>
+	<select name="librarybranchId">
+			<%for(LibraryBranch l: librarybranches){ %>
+				<option value="<%=l.getLibrarybranchId()%>"><%=l.getLibrarybranchName() %></option>
+			<%} %>
+		</select>
+	CardNo: <input type="text" name="cardNo">		
+</form>
 <br/>
 </body>
 </html>

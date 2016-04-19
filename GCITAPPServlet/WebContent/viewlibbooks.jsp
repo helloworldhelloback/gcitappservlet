@@ -10,7 +10,7 @@
     <%LibraryBranch librarybranch = null;
     if(request.getAttribute("librarybranch")!=null){
     	librarybranch = (LibraryBranch)request.getAttribute("librarybranch");
-    	}%>
+    }%>
     <% 
     List<Book_Copies> bookcopies=null;
     if(librarybranch!=null){

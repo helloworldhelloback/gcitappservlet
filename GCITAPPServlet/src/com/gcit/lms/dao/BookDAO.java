@@ -77,6 +77,15 @@ public class BookDAO extends BaseDAO{
         }
         return null;
     }
+    public Book readBookFromResultSet(ResultSet rs) throws SQLException{
+    	Book b = new Book();
+        b.setBookId(rs.getInt("bookId"));
+        b.setTitle(rs.getString("title"));
+        Publisher p = new Publisher();
+        p.setPublisherId(rs.getInt("pubId"));
+        b.setPublisher(p);
+        return b;
+    }
 
     public Integer getCount(){		
         try{

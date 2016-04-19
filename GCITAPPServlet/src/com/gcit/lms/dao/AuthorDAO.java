@@ -86,7 +86,12 @@ public class AuthorDAO extends BaseDAO{
 		}
 		return null;
 	}
-   
+    public Author readAuthorFromResultSet(ResultSet rs) throws SQLException{
+    	Author a = new Author();
+        a.setAuthorId(rs.getInt("authorId"));
+        a.setAuthorName(rs.getString("authorName"));
+        return a;
+    }
 
     @Override
     public List<Author> extractData(ResultSet rs) {		
@@ -114,7 +119,6 @@ public class AuthorDAO extends BaseDAO{
             Author a = new Author();
             a.setAuthorId(rs.getInt("authorId"));
             a.setAuthorName(rs.getString("authorName"));
-
             authors.add(a);
         }
         return authors;

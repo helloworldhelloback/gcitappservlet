@@ -37,7 +37,14 @@ public class Book_CopiesDAO extends BaseDAO{
         }catch(SQLException se){
         }
     }
-
+	public Book_Copies readBookCopiesFromResultSet(ResultSet rs) throws SQLException{
+		Book_Copies bc = new Book_Copies();
+		bc.setBookId(rs.getInt("bookId"));
+		bc.setBranchId(rs.getInt("branchId"));
+		bc.setNoOfCopies(rs.getInt("noOfCopies"));
+		bc.setTitle(rs.getString("title"));
+        return bc;
+    }
 	@Override
 	public List<?> extractDataFirstLevel(ResultSet rs) throws SQLException {
 		// TODO Auto-generated method stub

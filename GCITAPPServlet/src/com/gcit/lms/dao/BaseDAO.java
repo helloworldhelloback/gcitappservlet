@@ -103,6 +103,21 @@ public abstract class BaseDAO {
 		return extractDataFirstLevel(rs);
 	}
 
+	public List<?> readSpecial(String query, Object[] vals) throws SQLException, ClassNotFoundException{
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(query);
+		int count = 1;
+		
+		if(vals!=null){
+			for(Object o: vals){
+				pstmt.setObject(count, o);
+				count++;
+			}
+		}
+		ResultSet rs = pstmt.executeQuery();		
+		return extractData(rs);
+	}
+
 	public abstract List<?> extractDataFirstLevel(ResultSet rs) throws SQLException;
 	public abstract List<?> extractData(ResultSet rs) throws SQLException;
 }
