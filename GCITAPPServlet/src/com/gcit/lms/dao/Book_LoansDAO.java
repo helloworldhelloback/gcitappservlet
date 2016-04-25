@@ -56,8 +56,10 @@ public class Book_LoansDAO extends BaseDAO {
             	Book_Loan b = new Book_Loan();
                 b.setBookId(rs.getInt("bookId"));
                 b.setBranchId(rs.getInt("branchId"));
-               // if(rs.get)
-                //b.setCardNo(rs.getInt("cardNo"));
+           //check if column exists or not
+                //if(rs.findColumn("cardNo"))
+               // 	b.setCardNo(rs.getInt("cardNo"));
+                //}
                // b.setDateOut(rs.getDate("dateOut"));
                // b.setDueDate(rs.getDate("dueDate"));
                // b.setDateIn(rs.getDate("dateIn"));

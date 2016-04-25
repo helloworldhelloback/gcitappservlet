@@ -65,12 +65,12 @@ public class AdministratorService {
         }
         return authorId;
     }	
-	public List<Author> getAllAuthors()throws SQLException, ClassNotFoundException{
+	public List<Author> getAllAuthors(int pageNo)throws SQLException, ClassNotFoundException{
             ConnectionUtil c = new ConnectionUtil();
             Connection conn = c.getConnection();
             try{
                     AuthorDAO adao = new AuthorDAO(conn);
-                    return adao.readAllAuthors();
+                    return adao.readAllAuthors(pageNo);
             }catch (Exception e){
                     e.printStackTrace();
                     //conn.rollback();
@@ -120,6 +120,21 @@ public class AdministratorService {
 		}finally{
 			conn.close();
 		}		
+	}
+	
+	public Integer getAuthorCount() throws ClassNotFoundException, SQLException{
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			AuthorDAO adao = new AuthorDAO(conn);
+			return adao.getCount();
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
 	}
 	/////////////////////////////////////////Book//////////////////////////////////////////////////////////
 	

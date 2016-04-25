@@ -1,61 +1,109 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" 
+pageEncoding="ISO-8859-1" %>
     <%@ page import="java.util.List" %>
     <%@ page import="java.util.ArrayList" %>
     <%@ page import="com.gcit.lms.entity.Author" %>
     <%@ page import="com.gcit.lms.entity.Book" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
-    <% 
-    	AdministratorService service = new AdministratorService();
-    	List<Author> authors = service.getAllAuthors();
-    %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+<%@ include file="include.html"%>
+<%
+	AdministratorService service = new AdministratorService();
+	Integer authorsCount = service.getAuthorCount();
+	List<Author> authors = new ArrayList<Author>();
+	if (request.getAttribute("authors") != null) {
+		authors = (List<Author>)request.getAttribute("authors");
+	}else{
+		authors = service.getAllAuthors(1);	
+	}
+		
+%>
+
 <script type="text/javascript">
-function deleteAuthor(authorId){
+function deleteAuthor(authorId, pageNo){
+	
 	$.ajax({
 		  url: "deleteAuthor",
 		  data:{
-			  authorId: authorId
+			  authorId: authorId,
+			  pageNo : pageNo
 		  }
 		}).done(function(data) {
 		  $('#authorsTable').html(data);
 		});
 }
+
 </script>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>LMS</title>
+
+
+
 <h2>Welcome to GCIT Library Management System - Admin</h2>
-<button type="button" onclick="javascript:location.href='administrator.html'">Back To Admin Page</button>
-<br/>
-<br/>
+
 ${result}
-<body>
+<nav>
+	<ul class="pagination">
+		<li><a href="#" aria-label="Previous"> <span
+				aria-hidden="true">&laquo;</span>
+		</a></li>
+		<%if(authorsCount!=null &&  authorsCount >0){
+			int pageNo = authorsCount % 10;
+			int pages = 0;
+			if(pageNo == 0){
+				pages = authorsCount/10;
+			}else{
+				pages = (authorsCount/10) + 1;
+			}			
+			for(int i=1; i<=pages;i++){%>
+				<li><a href="pageAuthors?pageNo=<%=i%>"><%=i %></a></li>
+			<%}
+			
+		} %>
+		<li>
+      		<a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+	</ul>
+</nav>
 
-<table border="2" id="authorsTable">
-	<tr>
-		<th>Author Name</th>
-		<th>Book Title</th>
-		<th>Edit</th>
-		<th>Delete</th>
-	</tr>	
-	<%for (Author a: authors){ %>
-	<tr>
-	<td><% out.println(a.getAuthorName()); %></td>
-	<td><%if(a.getBooks()!=null && a.getBooks().size() >0){
-		for(Book b: a.getBooks()){
-			out.println(b.getTitle());
-			out.println(", ");
-		}
-	}	
-	%></td>
-	<td><button type="button" onclick="javascript:location.href='editAuthor?authorId=<%=a.getAuthorId() %>'">EDIT</button>
-	<td><button type="button" onclick="deleteAuthor(<%=a.getAuthorId() %>)">DELETE</button>
-	</tr>
-	<%} %>
-</table>
+<div class="row">
+	<div class="col-md-6">
+		<table border="2" id="authorsTable" class="table">
+			<tr>
+				<th>Author Name</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+
+			<%
+				for (Author a : authors) {
+			%>
+			<tr>
+				<td>
+					<%
+						out.println(a.getAuthorName());
+					%>
+				</td>
 
 
-</body>
-</html>
+				<td align="center"><button type="button"
+						class="btn btn btn-primary" data-toggle="modal"
+						data-target="#myModal1"
+						href="editAuthor?authorId=<%=a.getAuthorId()%>">EDIT</button></td>
+
+
+				<td align="center"><button type="button" class="btn btn-sm btn-danger"
+						onclick="deleteAuthor(<%=a.getAuthorId()%>, 1)">DELETE</button></td>
+			</tr>
+			<%
+				}
+			%>
+		</table>
+	</div>
+</div>
+
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content"></div>
+	</div>
+</div>
+

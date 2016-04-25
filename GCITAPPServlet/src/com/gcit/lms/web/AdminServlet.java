@@ -18,7 +18,7 @@ import com.gcit.lms.service.AdministratorService;
  * Servlet implementation class AdminServlet
  */
 //
-@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor",
+@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/updateAuthor","/pageAuthors",
 	"/addPublisher","/editPublisher","/deletePublisher", "/getAllPublishers","/updatePublisher",
 	"/addGenre","/editGenre","/deleteGenre", "/getAllGenres","/updateGenre",
 	"/addLibraryBranch","/editLibraryBranch","/deleteLibraryBranch", "/getAllLibraryBranches","/updateLibraryBranch"
@@ -68,6 +68,9 @@ public class AdminServlet extends HttpServlet {
 		case "/deleteLibraryBranch":
 			deleteLibraryBranch(request, response);
 			break;
+		case "/pageAuthors":
+			pageAuthors(request, response);
+			break;
 		default:
 			break;
 		}
@@ -110,6 +113,26 @@ public class AdminServlet extends HttpServlet {
 		}
 	}
 //////////////////////////////////////Author//////////////////////////////////////////////////////////////////
+	private void pageAuthors(HttpServletRequest request, HttpServletResponse response) {
+		
+		Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		AdministratorService service = new AdministratorService();
+		try {
+			List<Author> authors = service.getAllAuthors(pageNo);
+			request.setAttribute("authors", authors);
+			RequestDispatcher rd = request.getRequestDispatcher("viewauthors.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	private void addAuthor(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		AdministratorService service = new AdministratorService();
@@ -144,31 +167,30 @@ public class AdminServlet extends HttpServlet {
 		request.setAttribute("result", addAuthorResult);		
 		rd.forward(request, response);
 	}
-	private void deleteAuthor(HttpServletRequest request, HttpServletResponse response) {
+	private void deleteAuthor(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
 		Integer authorId = Integer.parseInt(request.getParameter("authorId"));
+		//Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
 		AdministratorService service = new AdministratorService();
 		StringBuilder str = new StringBuilder();
-		try {
-			service.deleteAuthor(authorId);
-			List<Author> authors = service.getAllAuthors();
-			
-			str.append("<tr><th>Author Name</th><th>Book Title</th><th>Edit</th><th>Delete</th></tr>");
-			for(Author a: authors){
-				//str.append("<tr><td>"+a.getAuthorName()+"</td><td>Book Name</td>");
-				str.append("<tr><td>"+a.getAuthorName()+"</td><td>");
-				if(a.getBooks()!=null && a.getBooks().size() >0){
-					for(Book b: a.getBooks()){
-						str.append(b.getTitle());
-						str.append(", ");
-					}
-				}	 
-				str.append("</td>");
-				str.append("<td><button type='button' onclick=\"javascript:location.href='editAuthor?authorId="+a.getAuthorId()+"'\">EDIT</button><td>"									 
-						+ "<button type='button' onclick=\"deleteAuthor("+a.getAuthorId()+")\">DELETE</button></tr>)");
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+		
+		service.deleteAuthor(authorId);
+		List<Author> authors = service.getAllAuthors(pageNo);
+		
+		str.append("<tr><th>Author Name</th><th>Book Title</th><th>Edit</th><th>Delete</th></tr>");
+		for(Author a: authors){
+			//str.append("<tr><td>"+a.getAuthorName()+"</td><td>Book Name</td>");
+			str.append("<tr><td>"+a.getAuthorName()+"</td><td>");
+			if(a.getBooks()!=null && a.getBooks().size() >0){
+				for(Book b: a.getBooks()){
+					str.append(b.getTitle());
+					str.append(", ");
+				}
+			}	 
+			str.append("</td>");
+			str.append("<td><button type='button' onclick=\"javascript:location.href='editAuthor?authorId="+a.getAuthorId()+"'\">EDIT</button><td>"									 
+					+ "<button type='button' onclick=\"deleteAuthor("+a.getAuthorId()+")\">DELETE</button></tr>)");
 		}
+		
 
 		try {
 			response.getWriter().append(str.toString());

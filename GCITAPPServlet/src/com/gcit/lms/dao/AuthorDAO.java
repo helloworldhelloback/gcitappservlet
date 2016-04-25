@@ -16,68 +16,43 @@ public class AuthorDAO extends BaseDAO{
 		super(conn);
 	}
 
-    public void addAuthor(Author author){		
-        try{
-            save("insert into tbl_author (authorName) values (?)", new Object[] {author.getAuthorName()});
-        } catch(ClassNotFoundException ce){
-
-        }catch(SQLException se){
-        }
+    public void addAuthor(Author author) throws ClassNotFoundException, SQLException{	        
+        save("insert into tbl_author (authorName) values (?)", new Object[] {author.getAuthorName()});   
     }
 	
-	public Integer addAuthorWithID(Author author){
-        try{
-            return saveWithID("insert into tbl_author (authorName) values (?)", new Object[] {author.getAuthorName()});
-	} catch(ClassNotFoundException ce){
-        }catch(SQLException se){
-        }
-            return null;
+	public Integer addAuthorWithID(Author author)throws ClassNotFoundException, SQLException{
+        return saveWithID("insert into tbl_author (authorName) values (?)", new Object[] {author.getAuthorName()});
+	
+        //return null;
 	}
 
-    public void updateAuthor(Author author){		
-        try{
-            save("update tbl_author set authorName = ? where authorId = ?", new Object[] {author.getAuthorName(), author.getAuthorId()});
-        } catch(ClassNotFoundException ce){
-
-        }catch(SQLException se){
-        }
+    public void updateAuthor(Author author)throws ClassNotFoundException, SQLException{		      
+        save("update tbl_author set authorName = ? where authorId = ?", new Object[] {author.getAuthorName(), author.getAuthorId()});   
     }
 
-    public void deleteAuthor(Integer authorId){		
-        try{
-        	save("delete from tbl_author where authorId = ?",new Object[]{authorId});
-        } catch(ClassNotFoundException ce){
-
-        }catch(SQLException se){
-        }                
+    public void deleteAuthor(Integer authorId) throws ClassNotFoundException, SQLException{	
+    	save("delete from tbl_author where authorId = ?",new Object[]{authorId});                     
     }
     
 
-    public List<Author> readAllAuthors() {
-        try{
-            return (List<Author>) readAll("select * from tbl_author", null);
-        }      catch(ClassNotFoundException ce){            
-        }catch(SQLException se){
-        }
-        return null;
+    public List<Author> readAllAuthors(int pageNo) throws ClassNotFoundException, SQLException{
+    	setPageNo(pageNo);
+        return (List<Author>) readAll("select * from tbl_author", null);                        
+       // return null;
     }
 
-    public List<Author> readAuthorsByName(String name){
-        try{
-            return (List<Author>) readAll("select * from tbl_author where authorName like ?", new Object[] {name});
-        }      catch(ClassNotFoundException ce){            
-        }catch(SQLException se){
-        }
-        return null;
+    public List<Author> readAuthorsByName(String name) throws ClassNotFoundException, SQLException{
+
+        return (List<Author>) readAll("select * from tbl_author where authorName like ?", new Object[] {name});
+      
+        //return null;
     }
 
-    public Integer getCount(){		
-        try{
-            return getCount("select count(*) from tbl_author");
-        }catch(ClassNotFoundException ce){            
-        }catch(SQLException se){
-        }
-        return null;
+    public Integer getCount() throws ClassNotFoundException, SQLException{		
+
+        return getCount("select count(*) from tbl_author");
+       
+       // return null;
     }
     public Author readAuthorsByID(Integer authorId) throws ClassNotFoundException, SQLException{
 		List<Author> authors = (List<Author>) readAll("select * from tbl_author where authorId = ?", new Object[] {authorId});
@@ -94,21 +69,16 @@ public class AuthorDAO extends BaseDAO{
     }
 
     @Override
-    public List<Author> extractData(ResultSet rs) {		
-        List<Author> authors = new ArrayList<Author>();	
-        try{
-            BookDAO bdao = new BookDAO(getConnection());
-            while(rs.next()){
-                Author a = new Author();
-                a.setAuthorId(rs.getInt("authorId"));
-                a.setAuthorName(rs.getString("authorName"));
-                a.setBooks((List<Book>) bdao.readFirstLevel("select * from tbl_book where bookId IN (select bookId from tbl_book_authors where authorId = ?)", new Object[] {a.getAuthorId()}));							
-                authors.add(a);
-            }
-            return authors;
-        }catch(ClassNotFoundException ce){            
-        }catch(SQLException se){
-        }
+    public List<Author> extractData(ResultSet rs) throws SQLException, ClassNotFoundException {		
+        List<Author> authors = new ArrayList<Author>();	        
+        BookDAO bdao = new BookDAO(getConnection());
+        while(rs.next()){
+            Author a = new Author();
+            a.setAuthorId(rs.getInt("authorId"));
+            a.setAuthorName(rs.getString("authorName"));
+            a.setBooks((List<Book>) bdao.readFirstLevel("select * from tbl_book where bookId IN (select bookId from tbl_book_authors where authorId = ?)", new Object[] {a.getAuthorId()}));							
+            authors.add(a);
+        }       
         return authors;            
     }
 	

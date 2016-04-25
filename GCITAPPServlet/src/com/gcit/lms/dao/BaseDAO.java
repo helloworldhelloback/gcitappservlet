@@ -11,6 +11,23 @@ import java.util.List;
 public abstract class BaseDAO {
 	
 	private Connection conn;
+	private Integer pageNo;
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+	private Integer pageSize;
 	
 	public BaseDAO(Connection conn) {
 		this.conn = conn;
@@ -53,6 +70,9 @@ public abstract class BaseDAO {
 	
 	public List<?> readAll(String query, Object[] vals) throws SQLException, ClassNotFoundException{
 		Connection conn = getConnection();
+		if (pageNo != null && pageNo >0) {
+			query+=" LIMIT "+(pageNo - 1)*10+", 10";
+		}
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		int count = 1;
 		
@@ -119,5 +139,5 @@ public abstract class BaseDAO {
 	}
 
 	public abstract List<?> extractDataFirstLevel(ResultSet rs) throws SQLException;
-	public abstract List<?> extractData(ResultSet rs) throws SQLException;
+	public abstract List<?> extractData(ResultSet rs) throws SQLException, ClassNotFoundException;
 }

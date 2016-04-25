@@ -24,7 +24,7 @@
 ${result}
 </head>
 <body>
-	<form action="addAuthor" method="post">
+	<form action="updateAuthor" method="post">
 		Author Name: <input type="text" name="authorName" value="<%=author.getAuthorName() %>"> <br />
 		<input type="hidden" name="authorId" value=<%=author.getAuthorId() %>>
 		<button type="submit">Edit Author</button>
