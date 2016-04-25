@@ -15,6 +15,7 @@ pageEncoding="ISO-8859-1" %>
 	}else{
 		authors = service.getAllAuthors(1);	
 	}
+	int pageNo=1;
 		
 %>
 
@@ -31,21 +32,53 @@ function deleteAuthor(authorId, pageNo){
 		  $('#authorsTable').html(data);
 		});
 }
+function searchAuthor(searchString){
+	
+	$.ajax({
+		  url: "searchAuthor",
+		  data:{
+			  authorId: searchString
+		  }
+		}).done(function(data) {
+		  $('#searchResults').html(data);
+		});
+}
 
 </script>
-
+<script type="text/javascript">
+$(document).ready(function()
+		{
+		    // codes works on all bootstrap modal windows in application
+		    $('.modal').on('hidden.bs.modal', function(e)
+		    { 
+		        $(this).removeData();
+		    }) ;
+		});
+</script>
 
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 
 ${result}
+
+<form action="searchAuthors" method="post">
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Author Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchAuthor()">
+		<button onclick="searchAuthor();">Search!</button>
+	</div>
+</form>
+
+
+
+<div id="searchResults">
 <nav>
 	<ul class="pagination">
 		<li><a href="#" aria-label="Previous"> <span
 				aria-hidden="true">&laquo;</span>
 		</a></li>
 		<%if(authorsCount!=null &&  authorsCount >0){
-			int pageNo = authorsCount % 10;
+			pageNo = authorsCount % 10;
 			int pages = 0;
 			if(pageNo == 0){
 				pages = authorsCount/10;
@@ -91,13 +124,14 @@ ${result}
 
 
 				<td align="center"><button type="button" class="btn btn-sm btn-danger"
-						onclick="deleteAuthor(<%=a.getAuthorId()%>, 1)">DELETE</button></td>
+						onclick="deleteAuthor(<%=a.getAuthorId()%>, <%= pageNo%>)">DELETE</button></td>
 			</tr>
 			<%
 				}
 			%>
 		</table>
 	</div>
+</div>
 </div>
 
 <div id="myModal1" class="modal fade" tabindex="-1" role="dialog"

@@ -136,6 +136,20 @@ public class AdministratorService {
 		}
 		return null;
 	}
+	public List<Author> getAllAuthorsByName(String searchString, Integer pageNo) throws ClassNotFoundException, SQLException{
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			AuthorDAO adao = new AuthorDAO(conn);
+			return adao.readAuthorsByName(searchString, pageNo);
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
+	}
 	/////////////////////////////////////////Book//////////////////////////////////////////////////////////
 	
 	

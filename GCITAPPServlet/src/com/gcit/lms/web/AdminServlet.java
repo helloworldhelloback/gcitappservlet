@@ -18,7 +18,7 @@ import com.gcit.lms.service.AdministratorService;
  * Servlet implementation class AdminServlet
  */
 //
-@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/updateAuthor","/pageAuthors",
+@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/updateAuthor","/pageAuthors","/searchAuthors",
 	"/addPublisher","/editPublisher","/deletePublisher", "/getAllPublishers","/updatePublisher",
 	"/addGenre","/editGenre","/deleteGenre", "/getAllGenres","/updateGenre",
 	"/addLibraryBranch","/editLibraryBranch","/deleteLibraryBranch", "/getAllLibraryBranches","/updateLibraryBranch"
@@ -108,11 +108,30 @@ public class AdminServlet extends HttpServlet {
 		case "/updateLibraryBranch":
 			updateLibraryBranch(request, response);
 			break;
+		case "/searchAuthors":
+			searchAuthors(request, response);
+			break;
 		default:
 			break;
 		}
 	}
 //////////////////////////////////////Author//////////////////////////////////////////////////////////////////
+	private void searchAuthors(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Author> authors;
+		try {
+			authors = service.getAllAuthorsByName(searchString, 1);
+			request.setAttribute("authors", authors);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewauthors.jsp");
+		rd.forward(request, response);
+		
+	}
 	private void pageAuthors(HttpServletRequest request, HttpServletResponse response) {
 		
 		Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
@@ -167,14 +186,21 @@ public class AdminServlet extends HttpServlet {
 		request.setAttribute("result", addAuthorResult);		
 		rd.forward(request, response);
 	}
-	private void deleteAuthor(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+	private void deleteAuthor(HttpServletRequest request, HttpServletResponse response) {
 		Integer authorId = Integer.parseInt(request.getParameter("authorId"));
-		//Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		System.out.println("page No delete:"+pageNo);
 		AdministratorService service = new AdministratorService();
 		StringBuilder str = new StringBuilder();
+		List<Author> authors =null;
+		try {
+			service.deleteAuthor(authorId);
+			authors = service.getAllAuthors(pageNo);
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
-		service.deleteAuthor(authorId);
-		List<Author> authors = service.getAllAuthors(pageNo);
 		
 		str.append("<tr><th>Author Name</th><th>Book Title</th><th>Edit</th><th>Delete</th></tr>");
 		for(Author a: authors){
